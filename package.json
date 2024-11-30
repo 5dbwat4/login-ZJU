@@ -1,0 +1,25 @@
+{
+  "name": "login-zju",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "5dbwat4",
+  "license": "MIT",
+  "description": "Server-side library helping your application login to ZJU services",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/5dbwat4/login-ZJU.git"
+  },
+  "bugs": {
+    "url": "https://github.com/5dbwat4/login-ZJU/issues"
+  },
+  "homepage": "https://github.com/5dbwat4/login-ZJU#readme",
+  "dependencies": {
+    "tsc": "^2.0.4",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
