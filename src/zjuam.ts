@@ -2,7 +2,7 @@ import { rsaEncrypt } from "./utils/RSA";
 
 const pubkey_url = "https://zjuam.zju.edu.cn/cas/v2/getPubKey";
 
-const login_url = "https://zjuam.zju.edu.cn/cas/login";
+// const login_url = "https://zjuam.zju.edu.cn/cas/login";
 
 async function login_to_zjuam(username: string, password: string) {
   const pubkey = (await fetch(pubkey_url).then((res) => res.json())) as {
@@ -18,14 +18,15 @@ class ZJUAM {
   username: string;
   password: string;
   cookies: { [key: string]: string };
+  firstinLogin: boolean;
 
   constructor(username: string, password: string) {
     this.username = username;
     this.password = password;
     this.cookies = {};
-    this.login();
+    // this.login();
   }
-  login(): Promise<void> {
+  #_login(login_url: string): Promise<string> {
     return new Promise(async (resolve, reject) => {
       //get execution
       const login_html = (await fetch(login_url)
@@ -85,11 +86,11 @@ class ZJUAM {
 
       // console.log(key);
 
-      if (!key) {
-        reject({
-          message: "Fail to encrypt password.",
-        });
-      }
+      // if (!key) {
+      //   reject({
+      //     message: "Fail to encrypt password.",
+      //   });
+      // }
 
       // throw new Error('Not implemented')
       const login_res = await fetch(login_url, {
@@ -111,21 +112,15 @@ class ZJUAM {
         },
         redirect: "manual",
       }).then(async (res) => {
-        // console.log(await res.text())
-        // console.log(res.headers.getSetCookie());
+        console.log(await res.text())
+        console.log(res.headers.getSetCookie());
         res.headers.getSetCookie().forEach((cookieStr) => {
           const [key, value] = cookieStr.split(";")[0].split("=");
           this.cookies[key] = value;
         });
         if (res.status === 302) {
-          // console.log(res.headers.get("Location"))
-          if (res.headers.get("Location")?.includes("service.zju.edu.cn")) {
-            resolve();
-          } else {
-            reject({
-              message: "Failed to login: untracked error.",
-            });
-          }
+            this.firstinLogin=true;
+            resolve(res.headers.get("Location") as string);
         } else if (res.status === 200) {
           const text = (await res.text()) as string;
           const message = text.match(/\<span id=\"msg\"\>([^<]+)<\/span>/)?.[1];
@@ -138,17 +133,57 @@ class ZJUAM {
           });
         }
       });
-      console.log(login_res);
+      // console.log(login_res);
     });
   }
-  fetch(url: string, options: RequestInit = {}) {
+
+  login(){
+    return this.#_login("https://zjuam.zju.edu.cn/cas/login")
+  }
+
+  async fetch(url: string, options: RequestInit = {}) {
+    if(!this.firstinLogin){
+      await this.login().catch((e) => {
+        console.error(e);
+      });
+    }
+    console.log(this.cookies);
+    
     options.headers = {
       ...options.headers,
       Cookie: Object.entries(this.cookies)
         .map(([key, value]) => `${key}=${value}`)
         .join("; "),
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
+
     };
+    console.log(options);
+    
     return fetch(url, options);
+  }
+
+  async loginSvc(service : string): Promise<string>{
+    const fullLoginStr = "https://zjuam.zju.edu.cn/cas/login?service="+encodeURIComponent(service)
+    if(this.firstinLogin){
+      return await this.fetch(fullLoginStr,{
+        redirect:"manual",
+        method:"GET"
+      }).then(res=>{
+        console.log("loginSvc,",res.status,res.headers.get("Location"));
+        
+        if(res.status==302){
+          return res.headers.get("Location") as string
+        }else if(res.status==200){
+          return this.#_login(fullLoginStr)
+        }
+          return Promise.reject({
+            "message":"Login failed with status "+res.status
+          })  
+      })
+    }else{
+      return this.#_login(fullLoginStr)
+    }
   }
 }
 
