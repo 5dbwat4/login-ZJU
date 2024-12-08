@@ -1,5 +1,5 @@
-let Cookie_pool = {};
-function fetchWithCookie(url, options) {
+let Cookie_pool : Record<string, Record<string, string>> = {};
+function fetchWithCookie(url: string, options: RequestInit): Promise<Response> {
   const host = new URL(url).host;
   Cookie_pool[host] = Cookie_pool[host] || {};
   if (Cookie_pool[host]) {
@@ -21,7 +21,7 @@ function fetchWithCookie(url, options) {
   });
 }
 
-function extractCookie(host) {
+function extractCookie(host: string): Record<string, string> {
     return Cookie_pool[host] || {};
 }
 
