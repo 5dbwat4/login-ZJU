@@ -27,6 +27,8 @@ class ZJUAM {
     // this.login();
   }
   #_login(login_url: string): Promise<string> {
+    console.log("[ZJUAM] Attempting to login to ZJUAM.");
+    
     return new Promise(async (resolve, reject) => {
       //get execution
       const login_html = (await fetch(login_url)
@@ -112,14 +114,16 @@ class ZJUAM {
         },
         redirect: "manual",
       }).then(async (res) => {
-        console.log(await res.text())
-        console.log(res.headers.getSetCookie());
+        // console.log(await res.text())
+        // console.log(res.headers.getSetCookie());
         res.headers.getSetCookie().forEach((cookieStr) => {
           const [key, value] = cookieStr.split(";")[0].split("=");
           this.cookies[key] = value;
         });
         if (res.status === 302) {
             this.firstinLogin=true;
+            console.log("[ZJUAM] Login success.");
+            
             resolve(res.headers.get("Location") as string);
         } else if (res.status === 200) {
           const text = (await res.text()) as string;
@@ -147,7 +151,7 @@ class ZJUAM {
         console.error(e);
       });
     }
-    console.log(this.cookies);
+    // console.log(this.cookies);
     
     options.headers = {
       ...options.headers,
@@ -158,12 +162,14 @@ class ZJUAM {
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
 
     };
-    console.log(options);
+    // console.log(options);
     
     return fetch(url, options);
   }
 
   async loginSvc(service : string): Promise<string>{
+    console.log("[ZJUAM] Attempting to login to service: "+service);
+    
     const fullLoginStr = "https://zjuam.zju.edu.cn/cas/login?service="+encodeURIComponent(service)
     if(this.firstinLogin){
       return await this.fetch(fullLoginStr,{
