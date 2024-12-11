@@ -10,6 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.4.7"
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
