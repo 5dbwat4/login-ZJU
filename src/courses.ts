@@ -96,7 +96,9 @@ class COURSES {
     
     
     options.headers = {
+      ...options?.headers,
       "Cookie": "session=" + this.session+";",
+      "x-session-id": this.session,
     };
     return fetch(url, options).then(res=>{
       // console.log(res.status);
