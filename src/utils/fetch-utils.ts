@@ -26,7 +26,7 @@ function createFetchSession(): Promise<{
             .join("; "),
           },
         }).then(async (res) => {
-            console.log(`[session-fetch] Fetch ${url} with cookies`,cookiePool[origin],` and status ${res.status} and received cookies`,res.headers.getSetCookie());
+            // console.log(`[session-fetch] Fetch ${url} with cookies`,cookiePool[origin],` and status ${res.status} and received cookies`,res.headers.getSetCookie());
             // console.log("[Sessioned fetch] Fetch ",url);
             
             

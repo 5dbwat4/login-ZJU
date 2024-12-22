@@ -11,7 +11,7 @@ class CLASSROOM {
 
   async login() {
     console.log(
-      "[CLASSROOM] Attempting to login to loging to classroom.zju.edu.cn"
+      "[CLASSROOM] Attempting to login to classroom.zju.edu.cn"
     );
 
     createFetchSession().then(async (session) => {
@@ -73,14 +73,14 @@ class CLASSROOM {
       // I'm using pattern match to parse the token. We need the JWT part.
       // We must assure the format of the token is consistent.
 
-      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       // This part is down once the format of token is changed!
       // Once the code failed to run. Inspect it!!!!!!
       this.token = token
         .split(":")
         .filter((c) => c.startsWith('"ey'))[0]
         .split('"')[1];
-      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
       return;
     });

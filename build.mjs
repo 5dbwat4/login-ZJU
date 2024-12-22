@@ -15,6 +15,7 @@ await esbuild.build({
   platform: 'node',
   outfile: './build/login-ZJU.js',
   sourcemap: 'linked',
+  lineLimit: 110,
 //   target: 'lib',
   format:'esm',
 //   legalComments:'inline',

@@ -64,7 +64,7 @@ class COURSES {
             redirect: "manual",
           });
         } else {
-          throw new Error("Fail at first load.");
+          throw new Error("Fail at second load.");
         }
       })
       .then((res) => {
@@ -85,7 +85,7 @@ class COURSES {
 
   }
 
-  async fetch(url: string, options: any = {}): Promise<any> {
+  async fetch(url: string, options: any = {}): Promise<Response> {
     if (this.firstTime) {
       await this.login();
       this.firstTime = false;
@@ -98,7 +98,7 @@ class COURSES {
     options.headers = {
       ...options?.headers,
       "Cookie": "session=" + this.session+";",
-      "x-session-id": this.session,
+      "X-Session-Id": this.session,
     };
     return fetch(url, options).then(res=>{
       // console.log(res.status);
@@ -106,6 +106,7 @@ class COURSES {
       // console.log(res.headers.get("Location"));
       //Update session
       if(res.headers.get("Set-Cookie")){
+        //IMPORTANT NOTE: Here we assume that the session is the first cookie in the Set-Cookie header.  
         const session = res.headers.get("Set-Cookie")!.split(";")[0].split("=")[1];
         if(session!== this.session){
           this.session = session;
