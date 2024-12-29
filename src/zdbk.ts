@@ -11,10 +11,6 @@ class ZDBK {
     this.cookies = {};
   }
   async login() {
-    //         this.zjuamInstance.fetch("https://zjuam.zju.edu.cn/cas/login?service=http%3A%2F%2Fzdbk.zju.edu.cn%2Fjwglxt%2Fxtgl%2Flogin_ssologin.html",{
-    //     method: "GET",
-    //     redirect: "manual"
-    // })
     const callbackURL = await this.zjuamInstance.loginSvc(
       "http://zdbk.zju.edu.cn/jwglxt/xtgl/login_ssologin.html"
     );

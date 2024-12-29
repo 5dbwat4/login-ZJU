@@ -14,7 +14,7 @@ class CLASSROOM {
       "[CLASSROOM] Attempting to login to classroom.zju.edu.cn"
     );
 
-    createFetchSession().then(async (session) => {
+    return createFetchSession().then(async (session) => {
       await session
         .fetch(
           "https://tgmedia.cmc.zju.edu.cn/index.php?r=auth%2Flogin&forward=https%3A%2F%2Fclassroom.zju.edu.cn%2F",
@@ -67,7 +67,7 @@ class CLASSROOM {
           "_token"
         )
       );
-      console.log(token);
+      // console.log(token);
       // 784834b3512089de67d5438a50f8cf416a32e42e93f9cad734cb06f11e2cbb81a:2:{i:0;s:6:"_token";i:1;s:677:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2N*********************************************************oxMTJ9.BPC15h1zPU3*************************FWUCehA";}
 
       // I'm using pattern match to parse the token. We need the JWT part.
@@ -87,7 +87,7 @@ class CLASSROOM {
   }
 
   async fetch(url: string, options: RequestInit = {}) {
-    if (!this.token) {
+    if (!this.token || this.token.length === 0) {
       await this.login();
     }
 
