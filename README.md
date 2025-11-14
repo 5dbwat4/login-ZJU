@@ -29,15 +29,18 @@ This is mainly used for server-side applications.
 ### Current Implemented Services
 
 
-| Title    | Domain               | Class name  | Note |
-| -------- | -------------------- | ----------- | ---- |
-| 统一身份认证 | zjuam.zju.edu.cn | `ZJUAM` | - |
-| 智云课堂 | classroom.zju.edu.cn | `CLASSROOM` | -    |
-| 本科教学管理信息服务平台     |    zdbk.zju.edu.cn    |   `ZDBK`  |   -   |
-| 表单填报助手 | form.zju.edu.cn | `FORM` | -  |
-| 学在浙大（wangxin） | course.zju.edu.cn | `COURSE` |  请注意两个学在浙大的区别  |
-| 学在浙大（zju_web） | courses.zju.edu.cn | `COURSES` |  请注意两个学在浙大的区别  |
-| 校园卡二维码页面（存疑） | yqfkgl.zju.edu.cn | `YQFKGL` |  用于`https://yqfkgl.zju.edu.cn/_web/_customizes/ykt/index3.jsp`，不排除其它path下会有其它登录流程  |
+| Title    | Domain               | Class name  | 上次成功时间 | Note |
+| -------- | -------------------- | ----------- | ----------- | ---- |
+| 统一身份认证 | zjuam.zju.edu.cn | `ZJUAM` | 2025/11/14 | - |
+| 智云课堂 | classroom.zju.edu.cn | `CLASSROOM` | 2025/11/14 | -    |
+| 本科教学管理信息服务平台     |    zdbk.zju.edu.cn    | 2025/11/14 |   `ZDBK`  |   -   |
+| 表单填报助手 | form.zju.edu.cn | `FORM` | 2025/11/14 | -  |
+| 学在浙大（wangxin） | course.zju.edu.cn | `COURSE` | 2024/12/22 |  请注意两个学在浙大的区别  |
+| 学在浙大（zju_web） | courses.zju.edu.cn | `COURSES` | 2025/11/14 |  请注意两个学在浙大的区别  |
+| 校园卡二维码页面（存疑） | yqfkgl.zju.edu.cn | `YQFKGL` | 2024/12/22 |  用于`https://yqfkgl.zju.edu.cn/_web/_customizes/ykt/index3.jsp`，不排除其它path下会有其它登录流程  |
+
+鉴于部分服务可能会变更登录流程，如果你发现你的登录流程炸了，请您务必提交一个issue来让我知道，万分感谢！
+
 ### Login to ZJU
 
 ```typescript

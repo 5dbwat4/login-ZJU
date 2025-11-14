@@ -2,7 +2,7 @@
   "name": "login-zju",
   "version": "1.0.1",
   "description": "Server-side library helping your application login to ZJU services",
-  "main": "index.js",
+  "main": "build/login-ZJU.js",
   "scripts": {
     "build": "node build.mjs"
   },
@@ -10,7 +10,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "jsdom": "^27.2.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.1",

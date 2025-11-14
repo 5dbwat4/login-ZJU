@@ -1,59 +1,57 @@
-
+import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils";
 import type { ZJUAM } from "./zjuam";
+import { CookieJar } from "./utils/cookie-jar";
 
 class ZDBK {
   // the only used Cookie is "JSESSIONPREJSDM" and "route".
 
   zjuamInstance: ZJUAM;
-  cookies: { [key: string]: string };
+  cookiesJar: CookieJar;
+  logedIn: boolean = false;
   constructor(am: ZJUAM) {
     this.zjuamInstance = am;
-    this.cookies = {};
+    this.cookiesJar = createCookieJar();
   }
   async login() {
-    const callbackURL = await this.zjuamInstance.loginSvc(
-      "http://zdbk.zju.edu.cn/jwglxt/xtgl/login_ssologin.html"
+    await fetchWithCookie(
+      "https://zdbk.zju.edu.cn/jwglxt/xtgl/login_cxSsoLoginUrl.html",
+      { method: "POST" },
+      this.cookiesJar
     );
 
-    // console.log("callback:",callbackURL);
+    const loginCB = await this.zjuamInstance.loginSvc(
+      "https://zdbk.zju.edu.cn/jwglxt/xtgl/login_ssologin.html"
+    );
 
-    // It is OK to call it directly.
-    fetch(callbackURL, {
-      redirect: "manual",
-    }).then((res) => {
-    //   console.log(res.status);
-    //   console.log(res.headers.getSetCookie());
-      res.headers.getSetCookie().forEach((cookieStr) => {
-        if(cookieStr.includes("Path=/javajw;"))return;
-        const [key, value] = cookieStr.split(";")[0].split("=");
-        this.cookies[key] = value;
-      });
-    //   console.log(this.cookies);
-      
+    const res = await fetchWithCookie(loginCB, { redirect: "manual" }, this.cookiesJar);
 
-      if (
-        res.status == 302 &&
-        res.headers
-          .get("Location")
-          ?.includes("http://zdbk.zju.edu.cn/jwglxt/xtgl/index_initMenu.html")
-      ) {
-        fetch(res.headers.get("Location")!, {
-          redirect: "manual",
-          headers: {
-            Cookie: Object.entries(this.cookies)
-              .map(([key, value]) => `${key}=${value}`)
-              .join("; "),
-          },
-        }).then((res) => {
-            res.headers.getSetCookie().forEach((cookieStr) => {
-                const [key, value] = cookieStr.split(";")[0].split("=");
-                this.cookies[key] = value;
-              });
-        //   console.log(res.status);
-        //   console.log(res.headers);
-        });
-      }
-    });
+    if (res.status !== 302)
+      throw new Error("Login failed, status code is " + res.status);
+    if (
+      !res.headers
+        .get("Location")
+        ?.includes("https://zdbk.zju.edu.cn/jwglxt/xtgl/index_initMenu.html")
+    ) {
+      throw new Error(
+        "Login failed, redirect to unexpected url " +
+          res.headers.get("Location")
+      );
+    }
+    return true;
+  }
+
+  async fetch(url: string, init?: RequestInit) {
+    if (!this.logedIn) await this.login().then((v) => (this.logedIn = v));
+    return fetchWithCookie(
+      url,
+      {
+        ...init,
+        headers: {
+          ...init?.headers,
+        },
+      },
+      this.cookiesJar
+    );
   }
 }
 

@@ -1,4 +1,5 @@
-import fetchWithCookie from "./utils/fetch-with-cookie";
+import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils";
+import { CookieAccessInfo } from "./utils/cookie-jar";
 import type { ZJUAM } from "./zjuam";
 
 class COURSES {
@@ -6,6 +7,7 @@ class COURSES {
   // cookies: { [key: string]: string };
   session: string="";
   firstTime: boolean = true;
+  jar = createCookieJar();
   constructor(am: ZJUAM) {
     this.zjuamInstance = am;
     // this.cookies = {};
@@ -13,75 +15,38 @@ class COURSES {
 
   async login() {
     console.log("[COURSES] login begins");
-    
-    return fetchWithCookie("https://courses.zju.edu.cn/user/index", {
-        redirect: "manual",
-      })
-      .then((res) => {
-        // console.log(res.status);
-        // console.log(res.headers.getSetCookie());
-        // console.log(res.headers.get("Location"));
-        if (res.status == 302) {
-          return fetchWithCookie(res.headers.get("Location")!, {//something like https://identity.zju.edu.cn/auth/realms/zju/protocol/cas/login?ui_locales=zh-CN&service=https%3A//courses.zju.edu.cn/user/index&locale=zh_CN&ts=1733590703.188173
-            redirect: "manual",
-          });
-        } else {
-          throw new Error("Fail at first load.");
-        }
-      })
-      .then((res) => {
-        // console.log(res.status);
-        // console.log(res.headers.getSetCookie());
-        // console.log(res.headers.get("Location"));
-        if (res.status == 303) {
-          return fetchWithCookie(res.headers.get("Location")!, {// something like https://identity.zju.edu.cn/auth/realms/zju/broker/cas-client/login?session_code=wWtmnw71c1-D_TPo_MSPJrAKgVqEjlqjs9mmChLt4Bs&client_id=TronClass&tab_id=qpB9in-Du-c
-             
-            redirect: "manual",
-          });
-        } else {
-          throw new Error("Fail at first load.");
-        }
-      })
-      .then(async (res) => {
-        // console.log(res.status);
-        // console.log(res.headers.getSetCookie());
-        // console.log(res.headers.get("Location"));
-        if(res.status == 303){
-          const callbackUrl = await this.zjuamInstance.loginSvc(decodeURIComponent(res.headers.get("Location")!.replace("https://zjuam.zju.edu.cn/cas/login?service=","")));
-          return fetchWithCookie(callbackUrl, {
-            redirect: "manual",
-          });
-        }else{
-          throw new Error("Fail at first load.");
-        }
-      })
-      .then((res) => {
-        // console.log(res.status);
-        // console.log(res.headers.getSetCookie());
-        // console.log(res.headers.get("Location"));
-        if (res.status == 302) {
-          return fetchWithCookie(res.headers.get("Location")!, { // something like https://courses.zju.edu.cn/user/index?ticket=
-            redirect: "manual",
-          });
-        } else {
-          throw new Error("Fail at second load.");
-        }
-      })
-      .then((res) => {
-        // console.log(res.status);
-        // console.log(res.headers.getSetCookie());
-        // console.log(res.headers.get("Location"));
-        if (res.status == 302) { // Here we are to : https://courses.zju.edu.cn/user/index
-          console.log("[COURSES] Login success!");
-          // this.cookies = res.headers.getSetCookie();
-          this.session = res.headers.get("Set-Cookie")!.split(";")[0].split("=")[1];
-          // console.log(this.session);
-          
-          return true;
-        } else {
-          throw new Error("Fail at login.");
-        }
-      })
+
+    let currentURL = "https://courses.zju.edu.cn/user/index";
+
+    while(new URL(currentURL).hostname !== "zjuam.zju.edu.cn"){
+      console.log("[COURSES] Redirect:", currentURL);
+      const res = await fetchWithCookie(currentURL, { redirect: "manual" }, this.jar);
+      currentURL = res.headers.get("Location")!;
+    }
+    console.log("[COURSES] Redirected to ZJUAM for authentication:", currentURL);
+
+    currentURL = await this.zjuamInstance.loginSvc(new URL(currentURL).searchParams.get("service") || "")
+
+    console.log("[COURSES] Returned from ZJUAM, finalizing login at:", currentURL);
+
+    const res =  await fetchWithCookie(currentURL, { redirect: "manual" }, this.jar);
+
+    while(true){
+      console.log("[COURSES] Redirect:", currentURL);
+      const res = await fetchWithCookie(currentURL, { redirect: "manual" }, this.jar);
+      // console.log(res.status);
+      // console.log(res.headers);
+      // console.log(await res.text());
+      const content = await res.text();
+      if(res.status == 200 && content.includes("meta http-equiv=\"refresh\"")){
+        currentURL =  content.match(/meta http-equiv="refresh" content="0;URL=([^"]+)"/)![1];
+        continue;
+      }
+      if(!(res.status >= 300 && res.status < 400)) break;
+      currentURL = res.headers.get("Location")!;
+    }
+
+    return true;
 
   }
 
@@ -97,24 +62,8 @@ class COURSES {
     
     options.headers = {
       ...options?.headers,
-      "Cookie": "session=" + this.session+";",
-      "X-Session-Id": this.session,
     };
-    return fetch(url, options).then(res=>{
-      // console.log(res.status);
-      // console.log(res.headers);
-      // console.log(res.headers.get("Location"));
-      //Update session
-      if(res.headers.get("Set-Cookie")){
-        //IMPORTANT NOTE: Here we assume that the session is the first cookie in the Set-Cookie header.  
-        const session = res.headers.get("Set-Cookie")!.split(";")[0].split("=")[1];
-        if(session!== this.session){
-          this.session = session;
-          // console.log("Session updated:",this.session);
-        }
-      }
-      return res;
-    });
+    return fetchWithCookie(url, options, this.jar);
 
   }
 }
