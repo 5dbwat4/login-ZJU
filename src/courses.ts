@@ -1,5 +1,4 @@
 import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils";
-import { CookieAccessInfo } from "./utils/cookie-jar";
 import type { ZJUAM } from "./zjuam";
 
 class COURSES {
@@ -45,6 +44,8 @@ class COURSES {
       if(!(res.status >= 300 && res.status < 400)) break;
       currentURL = res.headers.get("Location")!;
     }
+
+    console.log("[COURSES] Login finalized.");
 
     return true;
 
