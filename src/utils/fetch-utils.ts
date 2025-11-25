@@ -10,6 +10,8 @@ export function createCookieJar(): CookieJar {
     return new CookieJar();
 }
 
+const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0';
+
 function headersToObject(headers: HeadersInit | undefined): Record<string, string> {
     const out: Record<string, string> = {};
     if (!headers) return out;
@@ -51,8 +53,10 @@ export async function fetchWithCookie(input: RequestInfo, init?: RequestInit, ja
         providedHeaders['cookie'] = existing ? (existing + '; ' + cookieHeader) : cookieHeader;
     }
 
+
     // Rebuild Headers for fetch
     const headers = new Headers();
+    headers.set('User-Agent', userAgent);
     for (const k of Object.keys(providedHeaders)) {
         headers.set(k, providedHeaders[k]);
     }
