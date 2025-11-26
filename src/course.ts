@@ -1,27 +1,27 @@
 // 学在浙大 course.zju.edu.cn
 
 import type { ZJUAM } from "./zjuam";
+import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils";
 
 class COURSE {
   zjuamInstance: ZJUAM;
-  cookies: { [key: string]: string };
+  cookieJar = createCookieJar();
+  token = "";
   constructor(am: ZJUAM, mode: "WEB" | "APP") {
     this.zjuamInstance = am;
-    this.cookies = {};
   }
-  token: string = "";
-  session: string;
 
   async login() {
+    console.log("[COURSE] login begins");
     const callbackURL = await this.zjuamInstance.loginSvc(
       "https://course.zju.edu.cn/ua/login?platform=WEB"
     );
 
-    console.log(callbackURL);
+    
 
-    await fetch(callbackURL, {
+    await fetchWithCookie(callbackURL, {
       redirect: "manual",
-    })
+    }, this.cookieJar)
       .then((res) => {
         console.log(res.status);
         console.log(res.headers.getSetCookie());

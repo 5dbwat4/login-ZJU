@@ -1,47 +1,32 @@
 import type { ZJUAM } from "./zjuam";
-import fetchWithCookie from "./utils/fetch-with-cookie";
+import fetchWithCookie,{createCookieJar} from "./utils/fetch-utils";
+
+// https://yqfkgl.zju.edu.cn/_web/_customizes/ykt/index3.jsp 校园卡二维码服务
 
 class YQFKGL {
-  //我也不知道是什么，反正校园卡二维码用的就是这个
-  zjuamInstance: ZJUAM;
+  #zjuamInstance: ZJUAM;
+  #cookieJar = createCookieJar();
+  #firstTime: boolean = true;
   constructor(am: ZJUAM) {
-    this.zjuamInstance = am;
+    this.#zjuamInstance = am;
   }
 
   async login() {
+    const serviceURL = "https://yqfkgl.zju.edu.cn/_web/_customizes/ykt/index3.jsp";
     console.log("[YQFKGL] login begins");
-
-    return fetchWithCookie(
-      "https://yqfkgl.zju.edu.cn/_web/_customizes/ykt/index3.jsp",
-      {
-        redirect: "manual",
-      }
-    )
-      .then((response) => {
-        if (response.status === 302) {
-          // return response.headers.get("location");
-
-          return this.zjuamInstance.loginSvc(
-            "https://yqfkgl.zju.edu.cn/_web/_customizes/ykt/index3.jsp"
-          );
-        }
-      })
-      .then((callbackURL) => {
-        return fetchWithCookie(callbackURL!, {
-          redirect: "manual",
-        });
-      })
-      .then((response) => {
-        if (response.status === 302) {
-          if (
-            response.headers.get("location") ===
-            "https://yqfkgl.zju.edu.cn/_web/_customizes/ykt/index3.jsp"
-          ) {
-            console.log("[YQFKGL] login success");
-            return true;
-          }
-        }
-      });
+    await fetchWithCookie(serviceURL,{redirect: "manual"},this.#cookieJar);
+    const redirect = await this.#zjuamInstance.loginSvc(serviceURL).catch(console.log);
+    if(!redirect) throw new Error("[YQFKGL] loginSvc failed");
+    console.log("[YQFKGL] Redirecting to ZJUAM for authentication:", redirect);
+    await fetchWithCookie(redirect,{redirect: "manual"},this.#cookieJar);
+    this.#firstTime = false;
+    console.log("[YQFKGL] login finished");
+  }
+  async fetch(url: string, options: any = {}): Promise<Response> {
+    if (this.#firstTime) {
+      await this.login();
+    }
+    return fetchWithCookie(url, options, this.#cookieJar);
   }
 }
 
