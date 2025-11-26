@@ -6,17 +6,29 @@
   "scripts": {
     "build": "node build.mjs"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "dotenv": "^16.4.7",
-    "jsdom": "^27.2.0"
+  "keywords": [
+    "ZJU"
+  ],
+  "files": [
+    "build",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/5dbwat4/login-ZJU.git"
   },
+  "bugs": {
+    "url": "https://github.com/5dbwat4/login-ZJU/issues"
+  },
+  "homepage": "https://github.com/5dbwat4/login-ZJU",
+  "author": "5dbwat4 <me@5dbwat4.top> (https://github.com/5dbwat4)",
+  "license": "MIT",
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^22.10.1",
     "esbuild": "^0.24.0",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "dotenv": "^16.4.7"
   }
 }

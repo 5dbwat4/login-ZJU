@@ -3,26 +3,28 @@
 Server-side library helping your application login to ZJU services
 
 ## Install
-
-!!!NOTE: This library is not yet published to npm!
-
 ```sh
 npm install login-zju
 ```
 
-Before publish, you can clone the repo and run
-
-```sh
-node build.mjs
-```
-
-You can find the `login-ZJU.js` in the folder `./build`.
 
 ## Usage
 
-!!!NOTE: When conpleted, it can be used through the way below.
+```js
+import { ZJUAM,ServiceName } from 'login-zju';
 
-Before publish, you may `import {Lib} from './path/to/login-ZJU'` instead of `from 'login-zju'`
+const am = new ZJUAM("username", "password");
+const service = new ServiceName(am); // e.g. new ZDBK(am);
+
+// then you can literally fetch the URL and login-ZJU will handle 
+// login or cookie management for you.
+
+const res = await service.fetch("/some/api",{
+    method: "GET",
+}); // Just like the native fetch API
+
+console.log(await res.text());
+```
 
 This is mainly used for server-side applications.
 

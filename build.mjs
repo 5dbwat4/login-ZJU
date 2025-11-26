@@ -5,7 +5,7 @@ import { execSync } from "child_process";
 
 const banner = `\
 /**
- * login-ZJU: A server-side library helping your application login to ZJU services
+ * login-ZJU: A light-weight server-side library helping your application login to ZJU services
  * @author 5dbwat4<me@5dbwat4.top>
  * @version ${package_info.version}
  */`;

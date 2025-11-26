@@ -17,9 +17,9 @@ class COURSE {
       "https://course.zju.edu.cn/ua/login?platform=WEB"
     );
 
-    
 
-    await fetchWithCookie(callbackURL, {
+
+    await fetch(callbackURL, {
       redirect: "manual",
     }, this.cookieJar)
       .then((res) => {
