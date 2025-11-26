@@ -4,14 +4,14 @@ import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils";
 const pubkey_url = "https://zjuam.zju.edu.cn/cas/v2/getPubKey";
 
 class ZJUAM {
-  username: string;
-  password: string;
-  jar = createCookieJar();
-  firstinLogin: boolean = false;
+  #username: string;
+  #password: string;
+  #jar = createCookieJar();
+  #firstinLogin: boolean = false;
 
   constructor(username: string, password: string) {
-    this.username = username;
-    this.password = password;
+    this.#username = username;
+    this.#password = password;
   }
 
   async #_login(login_url: string): Promise<string> {
@@ -20,7 +20,7 @@ class ZJUAM {
     // get login page and let fetchWithCookie populate the jar
     let login_html: string;
     try {
-      login_html = await fetchWithCookie(login_url, undefined, this.jar).then((res) => res.text());
+      login_html = await fetchWithCookie(login_url, undefined, this.#jar).then((res) => res.text());
     } catch (e) {
       return Promise.reject({ message: "Failed when fetch login page at first time." });
     }
@@ -33,16 +33,16 @@ class ZJUAM {
     // fetch pubkey (jar cookies will be sent automatically)
     let pubkey: { modulus: string; exponent: string };
     try {
-      pubkey = await fetchWithCookie(pubkey_url, undefined, this.jar).then((res) => res.json());
+      pubkey = await fetchWithCookie(pubkey_url, undefined, this.#jar).then((res) => res.json());
     } catch (e) {
       return Promise.reject({ message: "Failed when fetch pubkey." });
     }
 
-    const key = rsaEncrypt(this.password, pubkey.exponent, pubkey.modulus);
+    const key = rsaEncrypt(this.#password, pubkey.exponent, pubkey.modulus);
 
     // perform login POST
     const body = [
-      "username=" + this.username,
+      "username=" + this.#username,
       "password=" + key,
       "execution=" + execution,
       "_eventId=" + "submit",
@@ -56,9 +56,9 @@ class ZJUAM {
     };
 
     try {
-      const res = await fetchWithCookie(login_url, { method: "POST", body, headers, redirect: "manual" }, this.jar);
+      const res = await fetchWithCookie(login_url, { method: "POST", body, headers, redirect: "manual" }, this.#jar);
       if (res.status === 302) {
-        this.firstinLogin = true;
+        this.#firstinLogin = true;
         console.log("[ZJUAM] Login success.");
         return res.headers.get("Location") as string;
       } else if (res.status === 200) {
@@ -78,7 +78,7 @@ class ZJUAM {
   }
 
   async fetch(url: string, options: RequestInit = {}) {
-    if (!this.firstinLogin) {
+    if (!this.#firstinLogin) {
       await this.login().catch((e) => {
         console.error(e);
       });
@@ -90,14 +90,14 @@ class ZJUAM {
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
     };
 
-    return fetchWithCookie(url, { ...options, headers }, this.jar);
+    return fetchWithCookie(url, { ...options, headers }, this.#jar);
   }
 
   async loginSvc(service: string): Promise<string> {
     console.log("[ZJUAM] Attempting to login to service: " + service);
 
     const fullLoginStr = "https://zjuam.zju.edu.cn/cas/login?service=" + encodeURIComponent(service);
-    if (this.firstinLogin) {
+    if (this.#firstinLogin) {
       const res = await this.fetch(fullLoginStr, { redirect: "manual", method: "GET" });
       console.log("loginSvc,", res.status, res.headers.get("Location"));
       if (res.status === 302) {

@@ -22,7 +22,7 @@ const form_encode = (data: string) => {
 }
 
 class FORM {
-  token: string = "";
+  #token: string = "";
   zjuamInstance: ZJUAM;
   constructor(am: ZJUAM) {
     this.zjuamInstance = am;
@@ -44,7 +44,7 @@ class FORM {
         // console.log(r);
         if (r.code === 2000) {
           console.log("[FORM] login success");
-          this.token = r.data.token;
+          this.#token = r.data.token;
           return true;
         }else{
           throw new Error("[FORM] login failed",r);
@@ -56,20 +56,20 @@ class FORM {
   }
 
   async fetch(url: string): Promise<Response> {
-    if (this.token === "") {
+    if (this.#token === "") {
       await this.login();
     }
     try {
       const res = await fetch(url!, {
         headers: {
-            authentication: this.token,
+            authentication: this.#token,
         },
       });
       if (res.status === 200) {
         return res;
       } else {
         if (res.status === 401 || res.status === 403) {
-          this.token = "";
+          this.#token = "";
           return this.fetch(url);
         }
         throw new Error(`Request failed with status ${res.status}`);

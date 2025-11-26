@@ -1,7 +1,6 @@
 import * as esbuild from "esbuild";
 // import package_info from "./package.json" assert { type: "json" };
 import package_info from "./package.json" with { type: "json" };
-import { execSync } from "child_process";
 
 const banner = `\
 /**
@@ -15,7 +14,7 @@ await esbuild.build({
   bundle: true,
   minify: true,
   platform: "node",
-  outfile: "./build/login-ZJU.js",
+  outfile: "./dist/login-ZJU.js",
   sourcemap: "linked",
   //   target: 'lib',
   format: "esm",
@@ -25,4 +24,3 @@ await esbuild.build({
   },
 });
 
-// execSync("npx tsc --project tsconfig.json");

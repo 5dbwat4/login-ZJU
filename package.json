@@ -1,18 +1,19 @@
 {
   "name": "login-zju",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Server-side library helping your application login to ZJU services",
-  "main": "build/login-ZJU.js",
+  "main": "dist/login-ZJU.js",
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs && tsc --project tsconfig.json"
   },
   "keywords": [
     "ZJU"
   ],
   "files": [
-    "build",
+    "dist",
     "README.md"
   ],
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/5dbwat4/login-ZJU.git"

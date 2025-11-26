@@ -2,13 +2,13 @@ import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils";
 import type { ZJUAM } from "./zjuam";
 
 class COURSES {
-  zjuamInstance: ZJUAM;
+  #zjuamInstance: ZJUAM;
   // cookies: { [key: string]: string };
-  session: string="";
-  firstTime: boolean = true;
-  jar = createCookieJar();
+  #session: string="";
+  #firstTime: boolean = true;
+  #jar = createCookieJar();
   constructor(am: ZJUAM) {
-    this.zjuamInstance = am;
+    this.#zjuamInstance = am;
     // this.cookies = {};
   }
 
@@ -19,20 +19,20 @@ class COURSES {
 
     while(new URL(currentURL).hostname !== "zjuam.zju.edu.cn"){
       console.log("[COURSES] Redirect:", currentURL);
-      const res = await fetchWithCookie(currentURL, { redirect: "manual" }, this.jar);
+      const res = await fetchWithCookie(currentURL, { redirect: "manual" }, this.#jar);
       currentURL = res.headers.get("Location")!;
     }
     console.log("[COURSES] Redirected to ZJUAM for authentication:", currentURL);
 
-    currentURL = await this.zjuamInstance.loginSvc(new URL(currentURL).searchParams.get("service") || "")
+    currentURL = await this.#zjuamInstance.loginSvc(new URL(currentURL).searchParams.get("service") || "")
 
     console.log("[COURSES] Returned from ZJUAM, finalizing login at:", currentURL);
 
-    const res =  await fetchWithCookie(currentURL, { redirect: "manual" }, this.jar);
+    const res =  await fetchWithCookie(currentURL, { redirect: "manual" }, this.#jar);
 
     while(true){
       console.log("[COURSES] Redirect:", currentURL);
-      const res = await fetchWithCookie(currentURL, { redirect: "manual" }, this.jar);
+      const res = await fetchWithCookie(currentURL, { redirect: "manual" }, this.#jar);
       // console.log(res.status);
       // console.log(res.headers);
       // console.log(await res.text());
@@ -52,11 +52,10 @@ class COURSES {
   }
 
   async fetch(url: string, options: any = {}): Promise<Response> {
-    if (this.firstTime) {
+    if (this.#firstTime) {
       await this.login();
-      this.firstTime = false;
+      this.#firstTime = false;
     }
-    // console.log("Login finished.",this.firstTime,this.session);
 
     console.log("[COURSES] Fetching url:", url);
     
@@ -64,7 +63,7 @@ class COURSES {
     options.headers = {
       ...options?.headers,
     };
-    return fetchWithCookie(url, options, this.jar);
+    return fetchWithCookie(url, options, this.#jar);
 
   }
 }

@@ -32,9 +32,9 @@ const saferHeaders = {
 class OPEN {
   zjuamInstance: ZJUAM;
   // cookies: { [key: string]: string };
-  xcsrfToken: string = "";
-  firstTime: boolean = true;
-  jar = createCookieJar();
+  #xcsrfToken: string = "";
+  #firstTime: boolean = true;
+  #jar = createCookieJar();
   constructor(am: ZJUAM) {
     this.zjuamInstance = am;
     // this.cookies = {};
@@ -50,7 +50,7 @@ class OPEN {
         redirect: "manual",
         headers: saferHeaders,
       },
-      this.jar
+      this.#jar
     )
       .then((res) => res.json())
       .then((data) => {
@@ -67,13 +67,13 @@ class OPEN {
     console.log("[OPEN] Redirecting to ZJUAM for authentication:", RedirectUrl);
     const rl = await this.zjuamInstance.loginSvc_oauth2(RedirectUrl);
     console.log("[OPEN] Returned from ZJUAM, finalizing login at:", rl);
-    const res = await fetchWithCookie(rl, { redirect: "manual" }, this.jar);
+    const res = await fetchWithCookie(rl, { redirect: "manual" }, this.#jar);
     const finalURL = res.headers.get("Location")!;
     console.log("[OPEN] Finalizing login at:", finalURL);
     await fetchWithCookie(
       new URL(finalURL, "https://open.zju.edu.cn").toString(),
       { redirect: "manual" },
-      this.jar
+      this.#jar
     );
     // Get x-csrf-token from cookies
     const access = new CookieAccessInfo(
@@ -82,21 +82,21 @@ class OPEN {
         true,
         false
     );
-    const cookie = this.jar.getCookie("x-csrf-token", access);
-    this.xcsrfToken = cookie?.value || "";
+    const cookie = this.#jar.getCookie("x-csrf-token", access);
+    this.#xcsrfToken = cookie?.value || "";
     console.log("[OPEN] Login finalized.");
     return true;
   }
 
   async fetch(url: string, options: any = {}): Promise<Response> {
-    if (this.firstTime) {
+    if (this.#firstTime) {
       await this.login();
-      this.firstTime = false;
+      this.#firstTime = false;
     }
     return fetchWithCookie(
       url,
-      { headers: { ...saferHeaders, "x-csrf-token": this.xcsrfToken, ...options?.headers }, ...options },
-      this.jar
+      { headers: { ...saferHeaders, "x-csrf-token": this.#xcsrfToken, ...options?.headers }, ...options },
+      this.#jar
     );
   }
 }

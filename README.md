@@ -38,10 +38,10 @@ This is mainly used for server-side applications.
 | 本科教学管理信息服务平台     |    zdbk.zju.edu.cn   |   `ZDBK`  | 2025/11/14  |   -   |
 | 表单填报助手 | form.zju.edu.cn | `FORM` | 2025/11/14 | -  |
 | 学在浙大（zju_web） | courses.zju.edu.cn | `COURSES` | 2025/11/14 |    |
-| 校园卡二维码页面 | yqfkgl.zju.edu.cn | `YQFKGL` | 2024/12/22 |  用于`https://yqfkgl.zju.edu.cn/_web/_customizes/ykt/index3.jsp`，不排除其它path下会有其它登录流程  |
+| 校园卡二维码页面 | yqfkgl.zju.edu.cn | `YQFKGL` | 2025/11/26 |  用于`https://yqfkgl.zju.edu.cn/_web/_customizes/ykt/index3.jsp`，不排除其它path下会有其它登录流程  |
 | 浙大先生开放平台 | open.zju.edu.cn | `OPEN` | 2025/11/26 | 其实就是HiAgent  |
 
-鉴于部分服务可能会变更登录流程，如果你发现你的登录流程炸了，请您务必提交一个issue来让我知道，万分感谢！
+鉴于部分服务可能会变更登录流程，如果发现登录流程炸了，可以[提交一个issue](https://github.com/5dbwat4/login-ZJU/issues)或者[发布一个PR](https://github.com/5dbwat4/login-ZJU/pulls)。
 
 ### Login to ZJU
 
