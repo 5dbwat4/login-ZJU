@@ -2,11 +2,11 @@ import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils"
 import type { ZJUAM } from "./zjuam";
 
 class CLASSROOM {
-  zjuamInstance: ZJUAM;
-  token = "";
-  jar = createCookieJar();
+  #zjuamInstance: ZJUAM;
+  #token = "";
+  #jar = createCookieJar();
   constructor(am: ZJUAM) {
-    this.zjuamInstance = am;
+    this.#zjuamInstance = am;
   }
 
   async login() {
@@ -18,19 +18,19 @@ class CLASSROOM {
 
     while(new URL(currentURL).hostname !== "zjuam.zju.edu.cn"){
       console.log("[CLASSROOM] Redirect:", currentURL);
-      const res = await fetchWithCookie(currentURL, { redirect: "manual" }, this.jar);
+      const res = await fetchWithCookie(currentURL, { redirect: "manual" }, this.#jar);
       currentURL = res.headers.get("Location")!;
     }
 
     console.log("[CLASSROOM] Redirected to ZJUAM for authentication:", currentURL);
 
-    currentURL = await this.zjuamInstance.loginSvc_oauth2(currentURL);
+    currentURL = await this.#zjuamInstance.loginSvc_oauth2(currentURL);
 
     console.log("[CLASSROOM] Returned from ZJUAM, finalizing login at:", currentURL);
 
     while(true){
       console.log("[CLASSROOM] Redirect:", currentURL);
-      const res = await fetchWithCookie(currentURL, { redirect: "manual" }, this.jar);
+      const res = await fetchWithCookie(currentURL, { redirect: "manual" }, this.#jar);
       const content = await res.text();
       if(res.status == 200 && content.includes("meta http-equiv=\"refresh\"")){
         currentURL =  content.match(/meta http-equiv="refresh" content="0;URL=([^"]+)"/)![1];
@@ -45,7 +45,7 @@ class CLASSROOM {
   }
 
   async fetch(url: string, options: RequestInit = {}) {
-    if (!this.token || this.token.length === 0) {
+    if (!this.#token || this.#token.length === 0) {
       await this.login();
     }
     console.log("[CLASSROOM] Fetching:", url);
@@ -53,10 +53,10 @@ class CLASSROOM {
 
     const headers = {
       ...options.headers,
-      Authorization: `Bearer ${this.token}`,
+      Authorization: `Bearer ${this.#token}`,
     };
 
-    return fetchWithCookie(url, { ...options, headers }, this.jar);
+    return fetchWithCookie(url, { ...options, headers }, this.#jar);
   }
 }
 

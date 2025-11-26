@@ -23,13 +23,13 @@ const form_encode = (data: string) => {
 
 class FORM {
   #token: string = "";
-  zjuamInstance: ZJUAM;
+  #zjuamInstance: ZJUAM;
   constructor(am: ZJUAM) {
-    this.zjuamInstance = am;
+    this.#zjuamInstance = am;
   }
   async login() {
     console.log("[FORM] login begins");
-    return this.zjuamInstance
+    return this.#zjuamInstance
       .loginSvc(service)
       .then((callbackURL) => {
         const ticket = callbackURL.split("ticket=")[1].split("&")[0];
