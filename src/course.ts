@@ -1,7 +1,7 @@
 // 学在浙大 course.zju.edu.cn
 
-import type { ZJUAM } from "./zjuam";
-import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils";
+import type { ZJUAM } from "./zjuam.js";
+import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils.js";
 
 class COURSE {
   zjuamInstance: ZJUAM;

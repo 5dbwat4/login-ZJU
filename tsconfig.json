@@ -5,7 +5,8 @@
     "outDir": "./dist",
     "allowJs": false,
     "target": "ESNext",
-    "module": "NodeNext",
+    "module": "node20",
+    "moduleResolution": "nodenext"
   },
   "include": [
     "./index.ts"

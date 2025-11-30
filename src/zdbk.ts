@@ -1,6 +1,6 @@
-import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils";
-import type { ZJUAM } from "./zjuam";
-import { CookieJar } from "./utils/cookie-jar";
+import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils.js";
+import type { ZJUAM } from "./zjuam.js";
+import { CookieJar } from "./utils/cookie-jar.js";
 
 class ZDBK {
   // the only used Cookie is "JSESSIONPREJSDM" and "route".

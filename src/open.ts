@@ -1,8 +1,8 @@
 // open.zju.edu.cn 浙大先生开放平台
 
-import { CookieAccessInfo } from "./utils/cookie-jar";
-import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils";
-import type { ZJUAM } from "./zjuam";
+import { CookieAccessInfo } from "./utils/cookie-jar.js";
+import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils.js";
+import type { ZJUAM } from "./zjuam.js";
 
 const saferHeaders = {
   accept: "application/json, text/plain, */*",

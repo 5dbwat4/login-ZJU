@@ -1,5 +1,5 @@
-import { rsaEncrypt } from "./utils/RSA";
-import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils";
+import { rsaEncrypt } from "./utils/RSA.js";
+import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils.js";
 
 const pubkey_url = "https://zjuam.zju.edu.cn/cas/v2/getPubKey";
 

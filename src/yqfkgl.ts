@@ -1,5 +1,5 @@
-import type { ZJUAM } from "./zjuam";
-import fetchWithCookie,{createCookieJar} from "./utils/fetch-utils";
+import type { ZJUAM } from "./zjuam.js";
+import fetchWithCookie,{createCookieJar} from "./utils/fetch-utils.js";
 
 // https://yqfkgl.zju.edu.cn/_web/_customizes/ykt/index3.jsp 校园卡二维码服务
 

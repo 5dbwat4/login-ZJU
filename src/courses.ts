@@ -1,5 +1,5 @@
-import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils";
-import type { ZJUAM } from "./zjuam";
+import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils.js";
+import type { ZJUAM } from "./zjuam.js";
 
 class COURSES {
   #zjuamInstance: ZJUAM;

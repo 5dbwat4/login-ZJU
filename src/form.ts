@@ -1,4 +1,4 @@
-import type { ZJUAM } from "./zjuam";
+import type { ZJUAM } from "./zjuam.js";
 import crypto from "crypto";
 
 const service = "https://form.zju.edu.cn/";

@@ -1,10 +1,11 @@
-import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils"
-import type { ZJUAM } from "./zjuam";
+import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils.js"
+import type { ZJUAM } from "./zjuam.js";
 
 class CLASSROOM {
   #zjuamInstance: ZJUAM;
   #token = "";
   #jar = createCookieJar();
+  #firsttime = true;
   constructor(am: ZJUAM) {
     this.#zjuamInstance = am;
   }
@@ -40,12 +41,14 @@ class CLASSROOM {
       currentURL = res.headers.get("Location")!;
     }
 
+    this.#firsttime = false;
+
 
       return;
   }
 
   async fetch(url: string, options: RequestInit = {}) {
-    if (!this.#token || this.#token.length === 0) {
+    if (this.#firsttime) {
       await this.login();
     }
     console.log("[CLASSROOM] Fetching:", url);
@@ -53,7 +56,7 @@ class CLASSROOM {
 
     const headers = {
       ...options.headers,
-      Authorization: `Bearer ${this.#token}`,
+      // Authorization: `Bearer ${this.#token}`,
     };
 
     return fetchWithCookie(url, { ...options, headers }, this.#jar);

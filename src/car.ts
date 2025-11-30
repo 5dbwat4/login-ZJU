@@ -1,4 +1,4 @@
-import type { ZJUAM } from "./zjuam";
+import type { ZJUAM } from "./zjuam.js";
 
 
 class CAR {

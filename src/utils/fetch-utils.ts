@@ -1,4 +1,4 @@
-import { CookieJar, CookieAccessInfo } from './cookie-jar';
+import { CookieJar, CookieAccessInfo } from './cookie-jar.js';
 
 /**
  * Simple fetch wrapper that injects cookies from a CookieJar and stores Set-Cookie headers back.
