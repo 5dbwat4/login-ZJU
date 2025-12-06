@@ -1,3 +1,13 @@
+# 2025/12/06 v1.0.7
+
+- 新增了 cc98.org 的支持
+
+# 2025/12/01 v1.0.6
+
+- Add type:module to ensure module import works fine with older node.
+
+
+
 # 2025/11/25 v1.0.4
 
 - 新增了 open.zju.edu.cn (浙大先生开放平台) 的支持

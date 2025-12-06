@@ -5,6 +5,7 @@ import { ZJUAM } from "./src/zjuam.js";
 import { FORM } from "./src/form.js";
 import { CLASSROOM } from "./src/classroom.js";
 import { YQFKGL } from "./src/yqfkgl.js";
+import { CC98 } from "./src/CC98.js";
 
 import pkg from "./package.json" with { type: "json" };
 console.log("[login ZJU] You (or your application) are using login-ZJU version: " + pkg.version);
@@ -12,4 +13,4 @@ console.log("[login ZJU] If you find any issues, please report them at");
 console.log("                https://github.com/5dbwat4/login-ZJU");
 
 
-export {COURSES,ZDBK,ZJUAM,FORM,CLASSROOM,YQFKGL}
+export {COURSES,ZDBK,ZJUAM,FORM,CLASSROOM,YQFKGL,CC98}

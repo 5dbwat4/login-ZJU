@@ -1,6 +1,6 @@
 {
   "name": "login-zju",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Server-side library helping your application login to ZJU services",
   "main": "dist/login-ZJU.js",
   "scripts": {
