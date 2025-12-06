@@ -1,6 +1,8 @@
 # login-ZJU
 
-Server-side library helping your application login to ZJU services
+A light-weight server-side library helping your application login to ZJU services.
+
+[![npm version](https://badge.fury.io/js/login-zju.svg)](https://badge.fury.io/js/login-zju) [![Downloads](https://img.shields.io/npm/dt/login-zju.svg)](https://www.npmjs.com/package/login-zju) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Install
 ```sh
