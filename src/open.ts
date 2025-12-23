@@ -30,13 +30,13 @@ const saferHeaders = {
 
 /** */
 class OPEN {
-  zjuamInstance: ZJUAM;
+  #zjuamInstance: ZJUAM;
   // cookies: { [key: string]: string };
   #xcsrfToken: string = "";
   #firstTime: boolean = true;
   #jar = createCookieJar();
   constructor(am: ZJUAM) {
-    this.zjuamInstance = am;
+    this.#zjuamInstance = am;
     // this.cookies = {};
   }
   async login() {
@@ -65,7 +65,7 @@ class OPEN {
       throw new Error("[OPEN] Failed to get RedirectUrl from open.zju.edu.cn");
     }
     console.log("[OPEN] Redirecting to ZJUAM for authentication:", RedirectUrl);
-    const rl = await this.zjuamInstance.loginSvc_oauth2(RedirectUrl);
+    const rl = await this.#zjuamInstance.loginSvc_oauth2(RedirectUrl);
     console.log("[OPEN] Returned from ZJUAM, finalizing login at:", rl);
     const res = await fetchWithCookie(rl, { redirect: "manual" }, this.#jar);
     const finalURL = res.headers.get("Location")!;
@@ -85,13 +85,13 @@ class OPEN {
     const cookie = this.#jar.getCookie("x-csrf-token", access);
     this.#xcsrfToken = cookie?.value || "";
     console.log("[OPEN] Login finalized.");
+    this.#firstTime = false;
     return true;
   }
 
   async fetch(url: string, options: any = {}): Promise<Response> {
     if (this.#firstTime) {
       await this.login();
-      this.#firstTime = false;
     }
     return fetchWithCookie(
       url,
