@@ -37,12 +37,13 @@ This is mainly used for server-side applications.
 | -------- | -------------------- | ----------- | ----------- | ---- |
 | 统一身份认证 | zjuam.zju.edu.cn | `ZJUAM` | 2025/11/14 | - |
 | 智云课堂 | classroom.zju.edu.cn | `CLASSROOM` | 2025/11/14 | -    |
-| 本科教学管理信息服务平台     |    zdbk.zju.edu.cn   |   `ZDBK`  | 2025/11/14  |   -   |
+| 本科教学管理信息服务平台     |    zdbk.zju.edu.cn   |   `ZDBK`  | 2025/12/24  |   -   |
 | 表单填报助手 | form.zju.edu.cn | `FORM` | 2025/11/14 | -  |
 | 学在浙大（zju_web） | courses.zju.edu.cn | `COURSES` | 2025/11/14 |    |
 | 校园卡二维码页面 | yqfkgl.zju.edu.cn | `YQFKGL` | 2025/11/26 |  用于`https://yqfkgl.zju.edu.cn/_web/_customizes/ykt/index3.jsp`，不排除其它path下会有其它登录流程  |
 | 浙大先生开放平台 | open.zju.edu.cn | `OPEN` | 2025/11/26 | 其实就是HiAgent  |
 | CC98 | cc98.org | `CC98` | 2025/12/6 | 传参为账号密码 |
+| ETA 三全育人平台 | eta.zju.edu.cn | `ETA` | 2025/12/24 | 不会自动处理加解密，可以使用`eta.encode`和`eta.decode` |
 
 鉴于部分服务可能会变更登录流程，如果发现登录流程炸了，可以[提交一个issue](https://github.com/5dbwat4/login-ZJU/issues)或者[发布一个PR](https://github.com/5dbwat4/login-ZJU/pulls)。
 
