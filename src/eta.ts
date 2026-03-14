@@ -56,7 +56,7 @@ class ETA {
     console.log("[ETA] Returned from ZJUAM, finalizing login at:", rl);
     let currentURL = rl;
     while (true) {
-      console.log("[COURSES] Redirect:", currentURL);
+      console.log("[ETA] Redirect:", currentURL);
       const res = await fetchWithCookie(
         currentURL,
         { redirect: "manual" },
@@ -66,12 +66,14 @@ class ETA {
       currentURL = res.headers.get("Location")!;
     }
     console.log("[ETA] Login finalized.");
+      this.#firstTime = false;
+    return;
   }
 
   async fetch(url: string, options: any = {}): Promise<Response> {
     if (this.#firstTime) {
       await this.login();
-      this.#firstTime = false;
+
     }
     return fetchWithCookie(url, options, this.#jar);
   }
