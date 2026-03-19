@@ -12,7 +12,8 @@ function rsaEncrypt(passwd: string, exponent: string, nHex: string): string {
     //     crypt = (crypt * base) % n;
     //     base = (base * base) % n; 
     // } 
-    const ciphertextHex = crypt.toString(16);
+    const keyLen = nHex.length;
+    const ciphertextHex = crypt.toString(16).padStart(keyLen, '0');
     return ciphertextHex;
 }
 export { rsaEncrypt };
