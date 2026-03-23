@@ -28,8 +28,6 @@ class COURSES {
 
     console.log("[COURSES] Returned from ZJUAM, finalizing login at:", currentURL);
 
-    const res =  await fetchWithCookie(currentURL, { redirect: "manual" }, this.#jar);
-
     while(true){
       console.log("[COURSES] Redirect:", currentURL);
       const res = await fetchWithCookie(currentURL, { redirect: "manual" }, this.#jar);
