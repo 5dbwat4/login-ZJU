@@ -3,7 +3,7 @@
 import { CookieAccessInfo } from "./utils/cookie-jar.js";
 import fetchWithCookie, { createCookieJar } from "./utils/fetch-utils.js";
 import type { ZJUAM } from "./zjuam.js";
-import crypto from "crypto";
+import crypto from "node:crypto";
 
 const codec = {
     encode: (s: string) => {

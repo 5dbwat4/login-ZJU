@@ -6,7 +6,8 @@
     "allowJs": false,
     "target": "ESNext",
     "module": "node20",
-    "moduleResolution": "nodenext"
+    "moduleResolution": "nodenext",
+    "types": ["node"]
   },
   "include": [
     "./index.ts"
