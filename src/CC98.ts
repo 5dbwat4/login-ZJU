@@ -10,6 +10,11 @@ class CC98 {
     #expiresIn = 0;
     #username: string;
     #password: string;
+    /**
+     * The instance of CC98 class, which can be used to login and fetch data from cc98.org.
+     * @param username The username for the CC98 account.
+     * @param password The password for the CC98 account.
+     */
     constructor(username: string, password: string) {
         this.#username = username;
         this.#password = password;
@@ -68,7 +73,12 @@ class CC98 {
         console.log("[CC98] token refresh successful");
         return true
     }
-
+    /**
+     * fetch wrapper for cc98.org, it will automatically login/refresh token if not so.
+     * @param url This defines the resource that you wish to fetch.
+     * @param init A RequestInit object containing any custom settings that you want to apply to the request.
+     * @returns A Promise that resolves to a Response object.
+     */
     async fetch(url: string, options: RequestInit = {}) {
         console.log("[CC98] fetch:", url);
         if (!this.#accessToken) {

@@ -9,6 +9,11 @@ class ZJUAM {
   #jar = createCookieJar();
   #firstinLogin: boolean = false;
 
+  /**
+   * The constructor for ZJUAM class.
+   * @param username ZJU Username
+   * @param password ZJU Password
+   */
   constructor(username: string, password: string) {
     this.#username = username;
     this.#password = password;
@@ -73,10 +78,20 @@ class ZJUAM {
     }
   }
 
+  /**
+   * Login to ZJUAM.
+   * @returns Promise that may resolve or reject
+   */
   login() {
     return this.#_login("https://zjuam.zju.edu.cn/cas/login");
   }
 
+  /**
+   * fetch wrapper for ZJUAM, it will automatically login if not logged in.
+   * @param url This defines the resource that you wish to fetch.
+   * @param init A RequestInit object containing any custom settings that you want to apply to the request.
+   * @returns A Promise that resolves to a Response object.
+   */
   async fetch(url: string, options: RequestInit = {}) {
     if (!this.#firstinLogin) {
       await this.login().catch((e) => {
@@ -93,6 +108,11 @@ class ZJUAM {
     return fetchWithCookie(url, { ...options, headers }, this.#jar);
   }
 
+  /**
+   * Login to a service using ZJUAM.
+   * @param service The URL of the service, e.g. "https://zdbk.zju.edu.cn/jwglxt/xtgl/login_ssologin.html" for ZDBK. Do not include the "https://zjuam.zju.edu.cn/cas/login?service=" part, just the URL.
+   * @returns Promise that may resolve or reject
+   */
   async loginSvc(service: string): Promise<string> {
     console.log("[ZJUAM] Attempting to login to service: " + service);
 
@@ -111,6 +131,11 @@ class ZJUAM {
     }
   }
 
+  /**
+   * Login to an OAuth2 service using ZJUAM.
+   * @param redirectUrl The URL of FULL PATH. e.g. "https://zjuam.zju.edu.cn/cas/oauth2.0/authorize?response_type=code&client_id=EcZUPTTg7zcD6FpFPn&redirect_uri=http://m.lib.zju.edu.cn/pages/wechat/auth". For now we only support the full URL, and further we will suport client_id+redirect_uri style parameters.
+   * @returns Promise that may resolve or reject
+   */
   async loginSvc_oauth2(redirectUrl: string): Promise<string> {
     console.log("[ZJUAM] Attempting to login to oauth2 service: " + redirectUrl);
     // const res = await this.fetch(redirectUrl, { redirect: "manual", method: "GET" });

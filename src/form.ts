@@ -27,6 +27,10 @@ class FORM {
   constructor(am: ZJUAM) {
     this.#zjuamInstance = am;
   }
+  /**
+   * 
+   * @returns true if 
+   */
   async login() {
     console.log("[FORM] login begins");
     return this.#zjuamInstance
@@ -55,6 +59,12 @@ class FORM {
       });
   }
 
+  /**
+   * fetch wrapper for form.zju.edu.cn, it will automatically login if not logged in.
+   * @param url This defines the resource that you wish to fetch.
+   * @param init A RequestInit object containing any custom settings that you want to apply to the request.
+   * @returns A Promise that resolves to a Response object.
+   */
   async fetch(url: string): Promise<Response> {
     if (this.#token === "") {
       await this.login();

@@ -47,6 +47,13 @@ class CLASSROOM {
       return;
   }
 
+
+  /**
+   * fetch wrapper for classroom.zju.edu.cn, it will automatically login if not logged in.
+   * @param url This defines the resource that you wish to fetch.
+   * @param init A RequestInit object containing any custom settings that you want to apply to the request.
+   * @returns A Promise that resolves to a Response object.
+   */
   async fetch(url: string, options: RequestInit = {}) {
     if (this.#firsttime) {
       await this.login();

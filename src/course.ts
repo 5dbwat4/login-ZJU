@@ -18,7 +18,7 @@ class COURSE {
     );
 
 
-
+    
     await fetch(callbackURL, {
       redirect: "manual",
     }, this.cookieJar)

@@ -19,16 +19,16 @@ class APILIB {
   }
 
   async login() {
-    console.log("[booking.lib] login begins");
+    console.log("[api.lib] login begins");
 
     let redirectURL = await this.#zjuamInstance.loginSvc_oauth2(OAuthURL)
 
-    console.log("[booking.lib] Returned from ZJUAM, finalizing login at:", redirectURL);
+    console.log("[api.lib] Returned from ZJUAM, finalizing login at:", redirectURL);
 
     const code = redirectURL.match(/code=([^&]+)/)?.[1];
 
     if(!code) {
-      console.error("[booking.lib] Failed to get code from redirect URL:", redirectURL);
+      console.error("[api.lib] Failed to get code from redirect URL:", redirectURL);
       throw new Error("Login failed");
     }
     
@@ -42,31 +42,36 @@ class APILIB {
         this.bor_id = data?.data?.tlv_bor_id || "";
       return data?.data?.token;
     }).catch(err=>{
-      console.error("[booking.lib] Failed to get token at cas verification step:", err);
+      console.error("[api.lib] Failed to get token at cas verification step:", err);
       throw new Error("Login failed");
     });
 
     if(!token) {
-      console.error("[booking.lib] Failed to get token at cas verification step, response does not contain token.");
+      console.error("[api.lib] Failed to get token at cas verification step, response does not contain token.");
       throw new Error("Login failed");
     }
     this.#token = token;
 
 
 
-    console.log("[booking.lib] Login finalized.");
+    console.log("[api.lib] Login finalized.");
 
     return true;
 
   }
-
+  /**
+   * fetch wrapper for api.lib.zju.edu.cn (used in m.lib.zju.edu.cn), it will automatically login if not logged in.
+   * @param url This defines the resource that you wish to fetch.
+   * @param init A RequestInit object containing any custom settings that you want to apply to the request.
+   * @returns A Promise that resolves to a Response object.
+   */
   async fetch(url: string, options: any = {}): Promise<Response> {
     if (this.#firstTime) {
       await this.login();
       this.#firstTime = false;
     }
 
-    console.log("[booking.lib] Fetching url:", url);
+    console.log("[api.lib] Fetching url:", url);
     
     
     options.headers = {
@@ -81,7 +86,7 @@ class APILIB {
 export { APILIB };
 
 
-/**
+/*
 
 部分信息需要用到bor_id这个信息，可以通过apilib.bor_id来获取。
 

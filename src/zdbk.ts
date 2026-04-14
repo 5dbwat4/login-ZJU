@@ -12,6 +12,10 @@ class ZDBK {
     this.#zjuamInstance = am;
     this.#cookiesJar = createCookieJar();
   }
+  /**
+   * Login to zdbk.zju.edu.cn.
+   * @returns true if login successful, otherwise throw error.
+   */
   async login() {
     await fetchWithCookie(
       "https://zdbk.zju.edu.cn/jwglxt/xtgl/login_cxSsoLoginUrl.html",
@@ -39,7 +43,12 @@ class ZDBK {
     }
     return true;
   }
-
+  /**
+   * fetch wrapper for zdbk.zju.edu.cn, it will automatically login if not logged in.
+   * @param url This defines the resource that you wish to fetch.
+   * @param init A RequestInit object containing any custom settings that you want to apply to the request.
+   * @returns A Promise that resolves to a Response object.
+   */
   async fetch(url: string, init?: RequestInit) {
     if (!this.#logedIn) await this.login().then((v) => (this.#logedIn = v));
     return fetchWithCookie(
@@ -54,5 +63,7 @@ class ZDBK {
     );
   }
 }
+
+fetch
 
 export { ZDBK };
