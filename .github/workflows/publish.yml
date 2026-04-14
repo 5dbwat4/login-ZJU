@@ -11,18 +11,28 @@ permissions:
 
 jobs:
   publish:
+    name: Build & Publish to npm
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
 
-      # Ensure npm 11.5.1 or later is installed
-      - name: Update npm
-        run: npm install -g npm@latest
-      - run: npm ci
-      - run: npm run build
-      - run: npm publish
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build package
+        run: pnpm run build
+
+      - name: Publish to npm
+        run: pnpm publish --no-git-checks --provenance --access public
