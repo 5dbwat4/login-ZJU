@@ -9,7 +9,7 @@ import { CC98 } from "./src/CC98.js";
 import { OPEN } from "./src/open.js";
 import { ETA } from "./src/eta.js";
 import { APILIB } from "./src/apiLib.js";
-import { BOOKINGLIB } from "./src/bookingLIb.js";
+import { BOOKINGLIB } from "./src/bookingLib.js";
 
 import pkg from "./package.json" with { type: "json" };
 console.log("[login ZJU] You (or your application) are using login-ZJU version: " + pkg.version);
