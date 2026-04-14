@@ -106,7 +106,7 @@ export { BOOKINGLIB };
 
 如果删掉Authorization header，上述3中方案均是不行的（显然），{ code: 10001, msg: '您尚未登录' }
 
-4. 如果把Header中的Authorization删掉，所有方案都是不行的。
+4. 如果把Header中的Authorization删掉，所有方案都是不行的，哪怕带上authorization字段。
 
 然后我们默认添加了{Content-Type: application/json}这个Header，如果不添加POST body识别会出问题。但是你可以通过options.headers覆盖掉它。
 

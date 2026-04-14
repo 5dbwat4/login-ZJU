@@ -87,6 +87,6 @@ export { APILIB };
 
 测试了一下，{ statuscode: 500, message: '请勿操作他人数据！', data: [] }
 
-然后一些接口bor_id是必携带的，不携带的话不会自动从jwt中获取。
+然后一些接口bor_id是必携带的，不携带的话后端不会自动从jwt中获取。
 
  */
