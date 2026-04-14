@@ -24,12 +24,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build package
-        run: pnpm run build
+        run: npm run build
 
       - name: Publish to npm
-        run: pnpm publish --no-git-checks --provenance --access public
+        run: npm publish --provenance --access public
