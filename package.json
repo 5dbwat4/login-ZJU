@@ -1,6 +1,6 @@
 {
   "name": "login-zju",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Server-side library helping your application login to ZJU services",
   "main": "dist/login-ZJU.js",
   "scripts": {
@@ -31,5 +31,8 @@
     "esbuild": "^0.28.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "nanoid": "^5.1.9"
   }
 }

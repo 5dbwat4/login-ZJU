@@ -10,6 +10,7 @@ import { OPEN } from "./src/open.js";
 import { ETA } from "./src/eta.js";
 import { APILIB } from "./src/apiLib.js";
 import { BOOKINGLIB } from "./src/bookingLib.js";
+import { ALT } from "./src/alt.js";
 
 import pkg from "./package.json" with { type: "json" };
 console.log("[login ZJU] You (or your application) are using login-ZJU version: " + pkg.version);
@@ -18,5 +19,5 @@ console.log("                https://github.com/5dbwat4/login-ZJU");
 
 
 export {COURSES,ZDBK,ZJUAM,FORM,CLASSROOM,YQFKGL,CC98,OPEN,ETA,
-APILIB,BOOKINGLIB
+APILIB,BOOKINGLIB,ALT
 }

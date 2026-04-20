@@ -46,6 +46,7 @@ This is mainly used for server-side applications.
 | ETA 三全育人平台 | eta.zju.edu.cn | `ETA` | 2025/12/24 | 不会自动处理加解密，可以使用`eta.encode`和`eta.decode` |
 | 图书馆移动端 | api/m.lib.zju.edu.cn | `APILIB` | 2026/4/14 | 有一部分API需要用到`bor_id`，该信息可以通过`apiLib.bor_id`获取 |
 | 预约图书馆座位系统 | booking.lib.zju.edu.cn | `BOOKINGLIB` | 2026/4/14 | 请求body中不需要带上authorization字段，所以token设置成了private的 |
+| 教在浙大 | alt.zju.edu.cn | `ALT` | 2026/4/14 | 它有一个签名header，但是实际后端不检验 |
 
 鉴于部分服务可能会变更登录流程，如果发现登录流程炸了，可以[提交一个issue](https://github.com/5dbwat4/login-ZJU/issues)或者[发布一个PR](https://github.com/5dbwat4/login-ZJU/pulls)。
 
