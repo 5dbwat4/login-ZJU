@@ -30,7 +30,7 @@
     "dotenv": "^17.4.2",
     "esbuild": "^0.28.0",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.2"
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "nanoid": "^5.1.9"
